@@ -31,9 +31,11 @@ export function setSearchResults(searchResultItems) {
 }
 
 const filterData = (searchString, items) => {
-	const str = searchString.trim();
+	const str = searchString.trim().toLowerCase();
 	return items.filter(
-		item => item.title.includes(str) || item.keywords.includes(str)
+		item =>
+			item.title.toLowerCase().includes(str) ||
+			item.keywords.toLowerCase().includes(str)
 	);
 };
 
