@@ -1,6 +1,6 @@
 # Shopify Web Engineer Challenge - Summer 2019
 
-Hosted Version:
+[Hosted Version](https://kyleyu96.github.io/toronto-waste-wizard)
 
 ## Instructions
 
