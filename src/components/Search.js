@@ -36,69 +36,63 @@ const styles = theme => ({
 	}
 });
 
-class Search extends React.Component {
-	render() {
-		const {
-			classes,
-			searchString,
-			searchResultItems,
-			isFetching,
-			isError,
-			setSearchString,
-			getResults,
-			favouritesItems
-		} = this.props;
-
-		return (
-			<Grid
-				container
-				direction="row"
-				justify="center"
-				alignItems="center"
-				className={classes.grid}
+const Search = ({
+	classes,
+	searchString,
+	searchResultItems,
+	isFetching,
+	isError,
+	setSearchString,
+	getResults,
+	favouritesItems
+}) => (
+	<Grid
+		container
+		direction="row"
+		justify="center"
+		alignItems="center"
+		className={classes.grid}
+	>
+		<Grid item xs={12}>
+			<form
+				onSubmit={e => {
+					getResults();
+					e.preventDefault();
+				}}
+				className={classes.form}
 			>
-				<Grid item xs={12}>
-					<form
-						onSubmit={e => {
-							getResults();
-							e.preventDefault();
-						}}
-						className={classes.form}
-					>
-						<TextField
-							fullWidth
-							value={searchString}
-							onChange={e => setSearchString(e.target.value)}
-							variant="outlined"
-						/>
-						<Button type="submit" className={classes.button}>
-							<SearchIcon className={classes.icon} />
-						</Button>
-					</form>
-				</Grid>
-				<Grid item xs={12}>
-					{!isFetching && !isError ? (
-						searchResultItems.map(item => (
-							<ItemContainer item={item} key={item.title} />
-						))
-					) : isError ? (
-						<Typography variant="h5">
-							Unfortunately, there was an error. Please retry
-							again in a few seconds! :(
-						</Typography>
-					) : (
-						<Typography variant="h5">Loading...</Typography>
-					)}
-				</Grid>
-				{favouritesItems.length > 0 && (
-					<Grid item xs={12}>
-						<Favourites favouritesItems={favouritesItems} />
-					</Grid>
-				)}
+				<TextField
+					fullWidth
+					value={searchString}
+					onChange={e => setSearchString(e.target.value)}
+					variant="outlined"
+				/>
+				<Button type="submit" className={classes.button}>
+					<SearchIcon className={classes.icon} />
+				</Button>
+			</form>
+		</Grid>
+		<Grid item xs={12}>
+			{!isFetching && !isError ? (
+				searchResultItems.map(item => (
+					<ItemContainer item={item} key={item.title} />
+				))
+			) : isError ? (
+				<Typography variant="h5">
+					Unfortunately, there was an error. Please retry again in a
+					few seconds! :(
+				</Typography>
+			) : (
+				<Typography variant="h5">Loading...</Typography>
+			)}
+		</Grid>
+		{favouritesItems.length > 0 && (
+			<Grid item xs={12}>
+				<Favourites favouritesItems={favouritesItems} />
 			</Grid>
-		);
-	}
-}
+		)}
+	</Grid>
+);
 
 Search.propTypes = {
 	classes: PropTypes.object.isRequired,
