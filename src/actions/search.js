@@ -31,18 +31,38 @@ export function setSearchResults(searchResultItems) {
 }
 
 const filterData = (searchString, items) => {
+	const separator = /\/| |\(|\)|-/;
+
 	const str = searchString.trim().toLowerCase();
-	return items.filter(
-		item =>
-			item.title.toLowerCase().includes(str) ||
-			item.keywords.toLowerCase().includes(str)
-	);
+	const searchWords = str.split(separator);
+
+	const isWordPresent = (word, string) => {
+		return (
+			word === "" ||
+			string
+				.toLowerCase()
+				.split(separator)
+				.includes(word)
+		);
+	};
+
+	const filterItem = (words, item) => {
+		const presentInTitle = words.every(word =>
+			isWordPresent(word, item.title)
+		);
+		const presentInKeywords = item.keywords
+			.split(",")
+			.some(keyword => words.every(word => isWordPresent(word, keyword)));
+		return presentInTitle || presentInKeywords;
+	};
+
+	return items.filter(item => filterItem(searchWords, item));
 };
 
 export function getResults() {
 	return (dispatch, getState) => {
 		const { searchString, dataCache } = getState().search;
-		if (searchString === "") dispatch(setSearchResults([]));
+		if (searchString.trim() === "") dispatch(setSearchResults([]));
 		else {
 			if (dataCache.length === 0) {
 				dispatch(getData());
